@@ -1,23 +1,26 @@
 {
-    "name": "ea1",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "type": "module",
-    "scripts": {
-        "serve": "nodemon index.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "dotenv": "^16.0.3",
-        "express": "^4.18.2",
-        "express-validator": "^6.14.2",
-        "mongoose": "^6.6.5",
-        "mongoose-timestamp": "^0.6.0"
-    },
-    "devDependencies": {
-        "prettier": "^2.7.1"
-    }
+  "name": "ea1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "debug": "nodemon -r dotenv/config --inspect index.js",
+    "serve": "nodemon -r dotenv/config index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-validator": "^6.14.2",
+    "mongoose": "^6.6.5",
+    "mongoose-timestamp": "^0.6.0"
+  },
+  "devDependencies": {
+    "debug": "^4.3.4",
+    "prettier": "^2.7.1",
+    "supports-color": "^9.2.3"
+  }
 }
