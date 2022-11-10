@@ -1,6 +1,6 @@
 import autoBind from "auto-bind";
 import { validationResult } from "express-validator";
-import userModel from "../models/user.model";
+import userModel from "../models/user.model.js";
 
 export default class {
   constructor() {
@@ -12,7 +12,7 @@ export default class {
     if (!result.isEmpty()) {
       const errors = result.array();
       const messeges = [];
-      errors.foreach((err) => messeges.push(err.msg));
+      errors.forEach((err) => messeges.push(err.msg));
       res.status(400).json({
         status: "error",
         data: messeges,
