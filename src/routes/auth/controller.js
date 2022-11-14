@@ -49,7 +49,9 @@ export default new (class extends controller {
         messege: "username or password invalid",
       });
     }
-    const token = jwt.sign(user.id, process.env.JWT_KEY);
+    const token = jwt.sign({ id: user.id }, process.env.JWT_KEY, {
+      expiresIn: Math.floor(Date.now() / 1000) - 30,
+    });
     return this.response({
       res,
       code: 200,
