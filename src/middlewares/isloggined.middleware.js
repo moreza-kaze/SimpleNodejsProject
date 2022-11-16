@@ -13,14 +13,14 @@ const isLoggined = async (req, res, next) => {
   const Token = fullToken.split(" ")[1];
   try {
     if (Auth === "Bearer") {
-      const decoded = jwt.decode(Token, process.env.JWT_KEY);
+      const decoded = jwt.verify(Token, process.env.JWT_KEY);
       const user = await userModel.findOne({ id: decoded._id });
       req.user = user;
       console.log(user);
       next();
     }
   } catch (ex) {
-    res.status(400).json({
+    res.status(401).json({
       messege: "token expire",
     });
   }
