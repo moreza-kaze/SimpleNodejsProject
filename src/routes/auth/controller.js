@@ -7,36 +7,43 @@ export default new (class extends controller {
     super();
   }
   async register(req, res) {
-    try {
-      let user = await this.User.findOne({
-        username: req.body.username,
-        email: req.body.email,
+    const firstUser = await this.User.find({});
+    if (firstUser.length < 1) {
+      let admin = new this.User({
+        username: "admin",
+        email: "admin@gmail.com",
+        password: "admin",
       });
-      if (user) {
-        console.log(user);
-        return this.response({
-          res,
-          code: 400,
-          messege: "user is exist",
-          data: {},
-        });
-      }
-    } catch {
-      const { username, email, password } = req.body;
-      user = new this.User({ username, email, password });
-      user.password = await bcrypt.hash(
-        user.password,
+      admin.password = await bcrypt.hash(
+        admin.password,
         await bcrypt.genSalt(10),
       );
-      await user.save();
-
+      await admin.save();
+    }
+    let user = await this.User.findOne({
+      username: req.body.username,
+      email: req.body.email,
+    });
+    if (user) {
+      console.log(user);
       return this.response({
         res,
-        code: 201,
-        messege: "user created",
-        data: user,
+        code: 400,
+        messege: "user is exist",
+        data: {},
       });
     }
+    const { username, email, password } = req.body;
+    user = new this.User({ username, email, password });
+    user.password = await bcrypt.hash(user.password, await bcrypt.genSalt(10));
+    await user.save();
+
+    return this.response({
+      res,
+      code: 201,
+      messege: "user created",
+      data: user,
+    });
   }
   async login(req, res) {
     const user = await this.User.findOne({ username: req.body.username });
