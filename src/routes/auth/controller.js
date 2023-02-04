@@ -7,30 +7,36 @@ export default new (class extends controller {
     super();
   }
   async register(req, res) {
-    let user = await this.User.findOne({
-      username: req.body.username,
-      email: req.body.email,
-    });
-    if (user) {
-      console.log(user);
+    try {
+      let user = await this.User.findOne({
+        username: req.body.username,
+        email: req.body.email,
+      });
+      if (user) {
+        console.log(user);
+        return this.response({
+          res,
+          code: 400,
+          messege: "user is exist",
+          data: {},
+        });
+      }
+    } catch {
+      const { username, email, password } = req.body;
+      user = new this.User({ username, email, password });
+      user.password = await bcrypt.hash(
+        user.password,
+        await bcrypt.genSalt(10),
+      );
+      await user.save();
+
       return this.response({
         res,
-        code: 400,
-        messege: "user is exist",
-        data: {},
+        code: 201,
+        messege: "user created",
+        data: user,
       });
     }
-    const { username, email, password } = req.body;
-    user = new this.User({ username, email, password });
-    user.password = await bcrypt.hash(user.password, await bcrypt.genSalt(10));
-    await user.save();
-
-    return this.response({
-      res,
-      code: 201,
-      messege: "user created",
-      data: user,
-    });
   }
   async login(req, res) {
     const user = await this.User.findOne({ username: req.body.username });
