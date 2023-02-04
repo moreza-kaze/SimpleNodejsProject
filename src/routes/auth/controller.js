@@ -50,7 +50,7 @@ export default new (class extends controller {
       });
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_KEY, {
-      expiresIn: "1m",
+      expiresIn: "1h",
     });
     return this.response({
       res,
